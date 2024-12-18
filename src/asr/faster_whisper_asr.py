@@ -1,4 +1,5 @@
 import os
+import torch
 
 from faster_whisper import WhisperModel
 
@@ -112,13 +113,15 @@ language_codes = {
 
 class FasterWhisperASR(ASRInterface):
     def __init__(self, **kwargs):
-        model_size = kwargs.get("model_size", "large-v3")
+        model_size = kwargs.get("model_size", "small")
         # Run on GPU with FP16
+        device = "cuda" if torch.cuda.is_available() else "cpu"
         self.asr_pipeline = WhisperModel(
-            model_size, device="cuda", compute_type="float16"
+            model_size, device=device, compute_type="float32"
         )
 
     async def transcribe(self, client):
+        print("start transcribe")
         file_path = await save_audio_to_file(
             client.scratch_buffer, client.get_file_name()
         )

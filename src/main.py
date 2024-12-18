@@ -35,7 +35,7 @@ def parse_args():
     parser.add_argument(
         "--asr-args",
         type=str,
-        default='{"model_size": "large-v3"}',
+        default='{"model_size": "small"}',
         help="JSON string of additional arguments for ASR pipeline",
     )
     parser.add_argument(
